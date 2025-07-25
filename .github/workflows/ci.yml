@@ -1,4 +1,4 @@
-name: Full CI Pipeline
+name: UI and Backend CI Pipeline
 
 on:
   push:
