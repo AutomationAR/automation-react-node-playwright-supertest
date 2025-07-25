@@ -54,9 +54,13 @@ jobs:
       - name: Wait for Frontend to be Ready
         run: npx wait-on http://localhost:5173
 
+      - name: Install UI Test Dependencies
+        working-directory: tests
+        run: npm ci
+
       - name: Install Playwright Browsers and Dependencies
         run: |
-          cd frontend
+          cd tests
           npx playwright install --with-deps
 
       - name: Run API Tests
