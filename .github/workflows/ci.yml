@@ -30,6 +30,12 @@ jobs:
           cd frontend
           npm ci
 
+      # ========== Build Frontend ==========
+      - name: Build Frontend
+        run: |
+          cd frontend
+          npm run build
+
       # ========== Start Backend ==========
       - name: Start Backend
         run: |
@@ -37,13 +43,14 @@ jobs:
           npm run dev &
         env:
           PORT: 4000
-      # ========== Start Frontend ==========
-      - name: Start Frontend
+
+      # ========== Start Frontend (Preview mode) ==========
+      - name: Start Frontend Preview Server
         run: |
           cd frontend
-          npm run dev &
+          npx vite preview --port 5173 &
         env:
-          PORT: 3000
+          PORT: 5173
 
       # ========== Wait for Servers ==========
       - name: Wait for Backend to be Ready
@@ -71,7 +78,7 @@ jobs:
           cd frontend
           npx playwright test
 
-      # ========== Upload Test Artifacts if UI Fails ==========
+      # ========== Upload Playwright Report on Failure ==========
       - name: Upload Playwright Report on Failure
         if: failure()
         uses: actions/upload-artifact@v4
