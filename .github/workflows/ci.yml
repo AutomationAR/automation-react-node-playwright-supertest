@@ -52,7 +52,7 @@ jobs:
 
       - name: Wait for Frontend to be Ready
         run: |
-          npx wait-on http://localhost:3000
+          npx wait-on http://localhost:5173
 
       # ========== Install Playwright Browsers ==========
       - name: Install Playwright
