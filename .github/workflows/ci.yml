@@ -17,7 +17,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 18
 
       # ========== Install Dependencies ==========
       - name: Install Backend Dependencies
@@ -44,25 +44,23 @@ jobs:
         env:
           PORT: 4000
 
-      # ========== Start Frontend (Preview mode) ==========
+      # ========== Start Frontend Preview Server ==========
       - name: Start Frontend Preview Server
         run: |
           cd frontend
-          npx vite preview --port 5173 &
+          npm run preview -- --port 5173 &
         env:
           PORT: 5173
 
       # ========== Wait for Servers ==========
       - name: Wait for Backend to be Ready
-        run: |
-          npx wait-on http://localhost:4000/api/items
+        run: npx wait-on http://localhost:4000/api/items
 
       - name: Wait for Frontend to be Ready
-        run: |
-          npx wait-on http://localhost:5173
+        run: npx wait-on http://localhost:5173
 
-      # ========== Install Playwright Browsers ==========
-      - name: Install Playwright
+      # ========== Install Playwright ==========
+      - name: Install Playwright Browsers
         run: |
           cd frontend
           npx playwright install --with-deps
