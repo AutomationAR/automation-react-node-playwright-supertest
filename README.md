@@ -1,4 +1,4 @@
-# react_frontent_and_nodejs_backend_playwright_supertest
+# automation-react-node-playwright-supertest
 
 ### 🏁 Quick Start
 
