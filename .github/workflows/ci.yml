@@ -11,35 +11,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the code
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 16
 
-      # Install backend dependencies
       - name: Install Backend Dependencies
         run: |
           cd backend
           npm ci
 
-      # Install frontend dependencies
       - name: Install Frontend Dependencies
         run: |
           cd frontend
           npm ci
 
-      # Build frontend (Vite)
       - name: Build Frontend
         run: |
           cd frontend
-          npm run build
+          npm run build || { echo "Frontend build failed"; exit 1; }
 
-      # Start backend server
       - name: Start Backend Server
         run: |
           cd backend
@@ -47,7 +41,6 @@ jobs:
         env:
           PORT: 4000
 
-      # Start frontend preview server (Vite)
       - name: Start Frontend Preview Server
         run: |
           cd frontend
@@ -55,31 +48,25 @@ jobs:
         env:
           PORT: 5173
 
-      # Wait for backend to be ready
       - name: Wait for Backend to be Ready
         run: npx wait-on http://localhost:4000/api/items
 
-      # Wait for frontend to be ready
       - name: Wait for Frontend to be Ready
         run: npx wait-on http://localhost:5173
 
-      # Install Playwright browsers (using official GitHub Action)
       - name: Install Playwright Browsers
         uses: microsoft/playwright-github-action@v1
 
-      # Run API tests (Jest + Supertest)
       - name: Run API Tests
         run: |
           cd backend
           npm test
 
-      # Run UI tests (Playwright)
       - name: Run UI Tests (Playwright)
         run: |
           cd frontend
           npx playwright test
 
-      # Upload Playwright report if UI tests fail
       - name: Upload Playwright Report on Failure
         if: failure()
         uses: actions/upload-artifact@v4
